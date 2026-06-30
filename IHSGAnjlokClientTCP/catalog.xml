@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="http://localhost:8080/IHSGAnjlokServer/UserWebService?Tester" uri="xml-resources/web-service-references/UserWebService_Tester/wsdl/localhost_8080/IHSGAnjlokServer/UserWebService.tester"/>
+    <system systemId="http://localhost:8080/IHSGAnjlokServer/UserWebService?wsdl" uri="xml-resources/web-service-references/UserWebService/wsdl/localhost_8080/IHSGAnjlokServer/UserWebService.wsdl"/>
+    <system systemId="http://localhost:8080/IHSGAnjlokServer/UserWebService?xsd=1" uri="xml-resources/web-service-references/UserWebService/wsdl/localhost_8080/IHSGAnjlokServer/UserWebService.xsd_1.xsd"/>
+    <system systemId="http://localhost:8080/IHSGAnjlokServer/MenuManagementWebService?wsdl" uri="xml-resources/web-service-references/MenuManagementWebService/wsdl/localhost_8080/IHSGAnjlokServer/MenuManagementWebService.wsdl"/>
+    <system systemId="http://localhost:8080/IHSGAnjlokServer/MenuManagementWebService?xsd=1" uri="xml-resources/web-service-references/MenuManagementWebService/wsdl/localhost_8080/IHSGAnjlokServer/MenuManagementWebService.xsd_1.xsd"/>
+</catalog>

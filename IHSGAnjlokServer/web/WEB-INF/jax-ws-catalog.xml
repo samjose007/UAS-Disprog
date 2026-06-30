@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="http://localhost:8080/IHSGAnjlokServer/HistoryWebService?wsdl" uri="wsdl/localhost_8080/IHSGAnjlokServer/HistoryWebService.wsdl"/>
+    <system systemId="http://localhost:8080/IHSGAnjlokServer/HistoryWebService?xsd=1" uri="wsdl/localhost_8080/IHSGAnjlokServer/HistoryWebService.xsd_1.xsd"/>
+    <system systemId="http://localhost:8080/IHSGAnjlokServer/ReservationHistoryWebService?wsdl" uri="wsdl/localhost_8080/IHSGAnjlokServer/ReservationHistoryWebService.wsdl"/>
+    <system systemId="http://localhost:8080/IHSGAnjlokServer/ReservationHistoryWebService?xsd=1" uri="wsdl/localhost_8080/IHSGAnjlokServer/ReservationHistoryWebService.xsd_1.xsd"/>
+</catalog>
