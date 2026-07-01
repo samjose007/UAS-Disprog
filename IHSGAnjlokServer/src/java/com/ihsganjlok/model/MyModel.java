@@ -35,7 +35,7 @@ public abstract class MyModel {
         if (MyModel.connection == null || MyModel.connection.isClosed()){
             try {
         Class.forName("com.mysql.cj.jdbc.Driver");
-        Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/db_food_reservation", "root", "");
+        Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/db_food_reservation?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC", "root", "");
         System.out.println("Koneksi Database Berhasil!"); // Tambahkan ini
         return conn;
     } catch (Exception ex) {
