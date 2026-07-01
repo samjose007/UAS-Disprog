@@ -12,9 +12,14 @@ package ihsganjlokclienttcp;
 public class FormMenuAdmin extends javax.swing.JFrame {
 
     private int userId;
-    public FormMenuAdmin(int idYangLogin) {
+    private String nama;
+    private String hakAkses;
+
+    public FormMenuAdmin(int idYangLogin, String nama, String hakAkses) {
         initComponents();
         this.userId = idYangLogin;
+        this.nama = nama;
+        this.hakAkses = hakAkses;
         refreshTable();
         
     }
@@ -293,7 +298,7 @@ public class FormMenuAdmin extends javax.swing.JFrame {
 
     private void btnKembaliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKembaliActionPerformed
         // TODO add your handling code here:
-        new FormDashboard(this.userId, "Admin", "Administrator").setVisible(true);
+        new FormDashboard(this.userId, this.nama, this.hakAkses).setVisible(true);
         this.dispose();
         
     }//GEN-LAST:event_btnKembaliActionPerformed
@@ -329,7 +334,7 @@ public class FormMenuAdmin extends javax.swing.JFrame {
        
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FormMenuAdmin(0).setVisible(true);
+                new FormMenuAdmin(0, "", "").setVisible(true);
             }
         });
     }

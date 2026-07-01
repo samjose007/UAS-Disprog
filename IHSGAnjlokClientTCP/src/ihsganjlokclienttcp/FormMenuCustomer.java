@@ -14,9 +14,14 @@ public class FormMenuCustomer extends javax.swing.JFrame {
      * Creates new form FormMenuCustomer
      */
     private int userId;
-    public FormMenuCustomer(int idYangLogin) {
+    private String nama;
+    private String hakAkses;
+
+    public FormMenuCustomer(int idYangLogin, String nama, String hakAkses) {
         initComponents();
         this.userId = idYangLogin;
+        this.nama = nama;
+        this.hakAkses = hakAkses;
         refreshTable();
     }
     public void refreshTable() {
@@ -117,7 +122,7 @@ public class FormMenuCustomer extends javax.swing.JFrame {
     private void btnKembaliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKembaliActionPerformed
         // TODO add your handling code here:
    
-        new FormDashboard(this.userId, "Nama User", "Customer").setVisible(true);
+        new FormDashboard(this.userId, this.nama, this.hakAkses).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnKembaliActionPerformed
 
@@ -170,7 +175,7 @@ public class FormMenuCustomer extends javax.swing.JFrame {
     
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FormMenuCustomer(0).setVisible(true);
+                new FormMenuCustomer(0, "", "").setVisible(true);
             }
         });
     }

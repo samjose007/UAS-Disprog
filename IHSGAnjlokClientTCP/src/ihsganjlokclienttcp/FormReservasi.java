@@ -10,11 +10,28 @@ package ihsganjlokclienttcp;
  */
 public class FormReservasi extends javax.swing.JFrame {
 
-    /**
-     * Creates new form FormReservasi
-     */
-    public FormReservasi() {
+    private int userId;
+    private String nama;
+    private String hakAkses;
+
+    public FormReservasi(int userId, String nama, String hakAkses) {
+        this.userId = userId;
+        this.nama = nama;
+        this.hakAkses = hakAkses;
         initComponents();
+        
+        javax.swing.JMenuBar menuBar = new javax.swing.JMenuBar();
+        javax.swing.JMenu menu = new javax.swing.JMenu("Navigasi");
+        javax.swing.JMenuItem itemKembali = new javax.swing.JMenuItem("Kembali ke Dashboard");
+        itemKembali.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                new FormDashboard(FormReservasi.this.userId, FormReservasi.this.nama, FormReservasi.this.hakAkses).setVisible(true);
+                FormReservasi.this.dispose();
+            }
+        });
+        menu.add(itemKembali);
+        menuBar.add(menu);
+        this.setJMenuBar(menuBar);
     }
 
     /**
@@ -162,8 +179,8 @@ public class FormReservasi extends javax.swing.JFrame {
         String jam = cmbJam.getSelectedItem().toString();
         String jumlahTamu = spnJumlahTamu.getValue().toString();
 
-        // Catatan: userID sementara kita 'hardcode' jadi 1 (Kecuali jika Anda sudah punya variabel user yang sedang login)
-        String userID = "1";
+        // Catatan: userID diambil dari parameter
+        String userID = String.valueOf(this.userId);
 
         // 2. Format Pesan Rahasia TCP: BOOKING_MEJA|userID|idMeja|tanggal|jam|jumlahTamu
         String pesan = "BOOKING_MEJA|" + userID + "|" + idMeja + "|" + tanggal + "|" + jam + "|" + jumlahTamu;
@@ -269,7 +286,7 @@ public class FormReservasi extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FormReservasi().setVisible(true);
+                new FormReservasi(0, "", "").setVisible(true);
             }
         });
     }

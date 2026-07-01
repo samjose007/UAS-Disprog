@@ -140,7 +140,7 @@ public class FormRegister extends javax.swing.JFrame {
       
     String nama = txtNama.getText();
     String alamat = txtAlamat.getText();
-    String email = txtNama.getText();
+    String email = txtEmail.getText();
     String username = txtUsername.getText();
     String password = new String(txtPassword.getPassword());
     if (nama.isEmpty() || username.isEmpty() || password.isEmpty()) {

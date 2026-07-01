@@ -22,15 +22,35 @@ public class FormHistoriReservasi extends javax.swing.JFrame {
     /**
      * Creates new form FormHistoriReservasi
      */
-public FormHistoriReservasi() {
-   initComponents();
+    private int userId;
+    private String nama;
+    private String hakAkses;
 
-    jTextFieldDariTanggal.setText("2026-06-01");
-    jTextFieldSampaiTanggal.setText("2026-06-30");
+    public FormHistoriReservasi(int userId, String nama, String hakAkses) {
+        this.userId = userId;
+        this.nama = nama;
+        this.hakAkses = hakAkses;
+        initComponents();
 
-    viewHistory();
-    tampilDetailBarisPertama();
-}
+        jTextFieldDariTanggal.setText("2026-06-01");
+        jTextFieldSampaiTanggal.setText("2026-06-30");
+
+        viewHistory();
+        tampilDetailBarisPertama();
+
+        javax.swing.JMenuBar menuBar = new javax.swing.JMenuBar();
+        javax.swing.JMenu menu = new javax.swing.JMenu("Navigasi");
+        javax.swing.JMenuItem itemKembali = new javax.swing.JMenuItem("Kembali ke Dashboard");
+        itemKembali.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                new FormDashboard(FormHistoriReservasi.this.userId, FormHistoriReservasi.this.nama, FormHistoriReservasi.this.hakAkses).setVisible(true);
+                FormHistoriReservasi.this.dispose();
+            }
+        });
+        menu.add(itemKembali);
+        menuBar.add(menu);
+        this.setJMenuBar(menuBar);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -404,7 +424,7 @@ public void tampilDetailBarisPertama() {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new FormHistoriReservasi().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new FormHistoriReservasi(0, "", "").setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

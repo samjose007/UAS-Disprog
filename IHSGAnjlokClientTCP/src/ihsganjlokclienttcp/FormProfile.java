@@ -199,11 +199,7 @@ public class FormProfile extends javax.swing.JFrame {
 
     private void btnKembaliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKembaliActionPerformed
         // TODO add your handling code here:
-        if (this.hakAksesSekarang.equals("Administrator")) {
-            new FormMenuAdmin(this.currentUserId).setVisible(true);
-        } else {
-            new FormMenuCustomer(this.currentUserId).setVisible(true);
-        }
+        new FormDashboard(this.currentUserId, txtNama.getText(), this.hakAksesSekarang).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnKembaliActionPerformed
 

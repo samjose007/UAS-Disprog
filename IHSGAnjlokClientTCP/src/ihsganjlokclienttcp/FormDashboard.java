@@ -80,6 +80,11 @@ public class FormDashboard extends javax.swing.JFrame {
         });
 
         btnHistori.setText("HISTORI");
+        btnHistori.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHistoriActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -123,16 +128,23 @@ public class FormDashboard extends javax.swing.JFrame {
     private void btnMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuActionPerformed
         // TODO add your handling code here:
         if (this.hakAkses.equals("Administrator")) {
-            new FormMenuAdmin(this.userId).setVisible(true);
+            new FormMenuAdmin(this.userId, this.nama, this.hakAkses).setVisible(true);
         } else {
-            new FormMenuCustomer(this.userId).setVisible(true);
+            new FormMenuCustomer(this.userId, this.nama, this.hakAkses).setVisible(true);
         }
         this.dispose();
     }//GEN-LAST:event_btnMenuActionPerformed
 
     private void btnReservasiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReservasiActionPerformed
         // TODO add your handling code here:
+        new FormReservasi(this.userId, this.nama, this.hakAkses).setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnReservasiActionPerformed
+
+    private void btnHistoriActionPerformed(java.awt.event.ActionEvent evt) {
+        new FormHistoriReservasi(this.userId, this.nama, this.hakAkses).setVisible(true);
+        this.dispose();
+    }
 
     private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
         // TODO add your handling code here:

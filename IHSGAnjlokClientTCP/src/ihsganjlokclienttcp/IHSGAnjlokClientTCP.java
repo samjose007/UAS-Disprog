@@ -16,8 +16,8 @@ public class IHSGAnjlokClientTCP {
     public static void main(String[] args) {
         // TODO code application logic here
          java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new FormHistoriReservasi().setVisible(true);
+             public void run() {
+                new FormLogin().setVisible(true);
             }
         });
     }
