@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="http://localhost:8080/IHSGAnjlokServer/UserWebService?wsdl" uri="xml-resources/web-service-references/UserWebService/wsdl/localhost_8080/IHSGAnjlokServer/UserWebService.wsdl"/>
+    <system systemId="http://localhost:8080/IHSGAnjlokServer/UserWebService?xsd=1" uri="xml-resources/web-service-references/UserWebService/wsdl/localhost_8080/IHSGAnjlokServer/UserWebService.xsd_1.xsd"/>
+    <system systemId="http://localhost:8080/IHSGAnjlokServer/TableManagementWebService?wsdl" uri="xml-resources/web-service-references/TableManagementWebService/wsdl/localhost_8080/IHSGAnjlokServer/TableManagementWebService.wsdl"/>
+    <system systemId="http://localhost:8080/IHSGAnjlokServer/TableManagementWebService?xsd=1" uri="xml-resources/web-service-references/TableManagementWebService/wsdl/localhost_8080/IHSGAnjlokServer/TableManagementWebService.xsd_1.xsd"/>
+    <system systemId="http://localhost:8080/IHSGAnjlokServer/MenuManagementWebService?wsdl" uri="xml-resources/web-service-references/MenuManagementWebService/wsdl/localhost_8080/IHSGAnjlokServer/MenuManagementWebService.wsdl"/>
+    <system systemId="http://localhost:8080/IHSGAnjlokServer/MenuManagementWebService?xsd=1" uri="xml-resources/web-service-references/MenuManagementWebService/wsdl/localhost_8080/IHSGAnjlokServer/MenuManagementWebService.xsd_1.xsd"/>
+    <system systemId="http://localhost:8080/IHSGAnjlokServer/ReservationSystemWebService?wsdl" uri="xml-resources/web-service-references/ReservationSystemWebService/wsdl/localhost_8080/IHSGAnjlokServer/ReservationSystemWebService.wsdl"/>
+    <system systemId="http://localhost:8080/IHSGAnjlokServer/ReservationSystemWebService?xsd=1" uri="xml-resources/web-service-references/ReservationSystemWebService/wsdl/localhost_8080/IHSGAnjlokServer/ReservationSystemWebService.xsd_1.xsd"/>
+    <system systemId="http://localhost:8080/IHSGAnjlokServer/FoodOrderingSystemWebService?wsdl" uri="xml-resources/web-service-references/FoodOrderingSystemWebService/wsdl/localhost_8080/IHSGAnjlokServer/FoodOrderingSystemWebService.wsdl"/>
+    <system systemId="http://localhost:8080/IHSGAnjlokServer/FoodOrderingSystemWebService?xsd=1" uri="xml-resources/web-service-references/FoodOrderingSystemWebService/wsdl/localhost_8080/IHSGAnjlokServer/FoodOrderingSystemWebService.xsd_1.xsd"/>
+    <system systemId="http://localhost:8080/IHSGAnjlokServer/HistoryWebService?wsdl" uri="xml-resources/web-service-references/HistoryWebService_2/wsdl/localhost_8080/IHSGAnjlokServer/HistoryWebService.wsdl"/>
+    <system systemId="http://localhost:8080/IHSGAnjlokServer/HistoryWebService?xsd=1" uri="xml-resources/web-service-references/HistoryWebService_2/wsdl/localhost_8080/IHSGAnjlokServer/HistoryWebService.xsd_1.xsd"/>
+</catalog>
