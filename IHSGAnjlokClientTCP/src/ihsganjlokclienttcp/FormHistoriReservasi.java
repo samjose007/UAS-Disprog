@@ -3,7 +3,6 @@
  */
 package ihsganjlokclienttcp;
 
-
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
@@ -28,6 +27,14 @@ public class FormHistoriReservasi
         this.nama = nama;
         this.hakAkses = hakAkses;
         this.initComponents();
+        if (!this.hakAkses.equalsIgnoreCase("Administrator")) {
+            cmbUpdateStatusDetail.setVisible(false);
+            btnUpdateStatusDetail.setVisible(false);
+            cmbUpdateStatusRes.setVisible(false);
+            btnUpdateStatusRes.setVisible(false);
+            lblUpdateStatusMenu.setVisible(false);
+            lblUpdateStatusReservasi.setVisible(false);
+        }
         this.jTextFieldDariTanggal.setText("2026-07-01");
         this.jTextFieldSampaiTanggal.setText("2026-07-31");
         this.viewHistory();
@@ -103,9 +110,7 @@ public class FormHistoriReservasi
 
     public List<String> kirimKeServerTCP(String pesan) {
         ArrayList<String> hasil = new ArrayList<String>();
-        try (Socket socket = new Socket("localhost", 6000);
-             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
+        try (Socket socket = new Socket("localhost", 6000); PrintWriter out = new PrintWriter(socket.getOutputStream(), true); BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
             out.println(pesan);
             String response = in.readLine();
             if (response != null && !response.equals("")) {
@@ -149,6 +154,12 @@ public class FormHistoriReservasi
         jComboBoxStatusReservasi = new javax.swing.JComboBox<>();
         btnCancelled = new javax.swing.JButton();
         btnKembali = new javax.swing.JButton();
+        lblUpdateStatusMenu = new javax.swing.JLabel();
+        cmbUpdateStatusDetail = new javax.swing.JComboBox<>();
+        btnUpdateStatusDetail = new javax.swing.JButton();
+        lblUpdateStatusReservasi = new javax.swing.JLabel();
+        cmbUpdateStatusRes = new javax.swing.JComboBox<>();
+        btnUpdateStatusRes = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -252,23 +263,39 @@ public class FormHistoriReservasi
         btnKembali.setText("Kembali");
         btnKembali.addActionListener(this::btnKembaliActionPerformed);
 
+        lblUpdateStatusMenu.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        lblUpdateStatusMenu.setText("Update Status Menu:");
+
+        cmbUpdateStatusDetail.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pending", "Preparing", "Ready", "Served", "Cancelled" }));
+        cmbUpdateStatusDetail.setToolTipText("");
+
+        btnUpdateStatusDetail.setText("UPDATE");
+        btnUpdateStatusDetail.addActionListener(this::btnUpdateStatusDetailActionPerformed);
+
+        lblUpdateStatusReservasi.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        lblUpdateStatusReservasi.setText("Update Status Reservasi:");
+
+        cmbUpdateStatusRes.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pending", "Confirmed", "Completed", "Cancelled" }));
+
+        btnUpdateStatusRes.setText("UPDATE");
+        btnUpdateStatusRes.addActionListener(this::btnUpdateStatusResActionPerformed);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addComponent(lblTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 953, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(scrollHistory, javax.swing.GroupLayout.PREFERRED_SIZE, 953, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(scrollHistory, javax.swing.GroupLayout.PREFERRED_SIZE, 953, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGap(425, 425, 425)
                         .addComponent(lblJudul))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(lblTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 953, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                             .addGap(39, 39, 39)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -292,8 +319,23 @@ public class FormHistoriReservasi
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(jTextFieldDariTanggal, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(jTextFieldSampaiTanggal, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                        .addComponent(scrollDetail, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 953, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(14, Short.MAX_VALUE))
+                        .addComponent(scrollDetail, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 953, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lblUpdateStatusReservasi)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cmbUpdateStatusRes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(11, 11, 11)
+                                .addComponent(btnUpdateStatusRes))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lblUpdateStatusMenu)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cmbUpdateStatusDetail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnUpdateStatusDetail)))))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -314,7 +356,7 @@ public class FormHistoriReservasi
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jComboBoxStatusReservasi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(label2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 63, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -324,11 +366,21 @@ public class FormHistoriReservasi
                             .addComponent(btnKembali))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
                 .addComponent(scrollDetail, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblUpdateStatusMenu)
+                    .addComponent(cmbUpdateStatusDetail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnUpdateStatusDetail))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(scrollHistory, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblUpdateStatusReservasi)
+                    .addComponent(cmbUpdateStatusRes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnUpdateStatusRes))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
                 .addComponent(lblTotal)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
@@ -364,6 +416,53 @@ public class FormHistoriReservasi
             JOptionPane.showMessageDialog(this, "Pilih reservasi yang ingin dibatalkan terlebih dahulu.");
         }
     }//GEN-LAST:event_btnCancelledActionPerformed
+
+    private void btnUpdateStatusResActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateStatusResActionPerformed
+        // TODO add your handling code here:
+        int baris = this.tblHistory.getSelectedRow();
+        if (baris < 0) {
+            JOptionPane.showMessageDialog(this, "Pilih reservasi yang mau diupdate!");
+            return;
+        }
+        String idRes = this.tblHistory.getValueAt(baris, 0).toString();
+        String statusBaru = cmbUpdateStatusRes.getSelectedItem().toString();
+
+        try {
+            List<String> resp = kirimKeServerTCP("UPDATE_STATUS_RESERVASI|" + idRes + "|" + statusBaru);
+            if (!resp.isEmpty()) {
+                JOptionPane.showMessageDialog(this, resp.get(0));
+                viewHistory(); 
+                tampilDetailBarisPertama();
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Gagal update: " + ex.getMessage());
+        }
+    }//GEN-LAST:event_btnUpdateStatusResActionPerformed
+
+    private void btnUpdateStatusDetailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateStatusDetailActionPerformed
+        // TODO add your handling code here:
+        int barisRes = this.tblHistory.getSelectedRow();
+        int barisDet = this.tblDetail.getSelectedRow();
+
+        if (barisRes < 0 || barisDet < 0) {
+            JOptionPane.showMessageDialog(this, "Pilih Reservasi dan Detail Menu yang mau diupdate!");
+            return;
+        }
+
+        String idRes = this.tblHistory.getValueAt(barisRes, 0).toString();
+        String namaMenu = this.tblDetail.getValueAt(barisDet, 0).toString(); 
+        String statusBaru = cmbUpdateStatusDetail.getSelectedItem().toString();
+
+        try {
+            List<String> resp = kirimKeServerTCP("UPDATE_STATUS_DETAIL|" + idRes + "|" + namaMenu + "|" + statusBaru);
+            if (!resp.isEmpty()) {
+                JOptionPane.showMessageDialog(this, resp.get(0));
+                viewDetailPesanan(Integer.parseInt(idRes)); 
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Gagal update: " + ex.getMessage());
+        }
+    }//GEN-LAST:event_btnUpdateStatusDetailActionPerformed
 
     private void btnKembaliActionPerformed(java.awt.event.ActionEvent evt) {
         new FormDashboard(this.userId, this.nama, this.hakAkses).setVisible(true);
@@ -411,6 +510,10 @@ public class FormHistoriReservasi
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelled;
     private javax.swing.JButton btnKembali;
+    private javax.swing.JButton btnUpdateStatusDetail;
+    private javax.swing.JButton btnUpdateStatusRes;
+    private javax.swing.JComboBox<String> cmbUpdateStatusDetail;
+    private javax.swing.JComboBox<String> cmbUpdateStatusRes;
     private javax.swing.JButton jButtonCari;
     private javax.swing.JButton jButtonRefrase;
     private javax.swing.JComboBox<String> jComboBoxStatusReservasi;
@@ -421,6 +524,8 @@ public class FormHistoriReservasi
     private java.awt.Label label3;
     private javax.swing.JLabel lblJudul;
     private javax.swing.JLabel lblTotal;
+    private javax.swing.JLabel lblUpdateStatusMenu;
+    private javax.swing.JLabel lblUpdateStatusReservasi;
     private javax.swing.JScrollPane scrollDetail;
     private javax.swing.JScrollPane scrollHistory;
     private javax.swing.JTable tblDetail;

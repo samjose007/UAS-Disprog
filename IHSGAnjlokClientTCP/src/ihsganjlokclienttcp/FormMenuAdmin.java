@@ -38,7 +38,8 @@ public class FormMenuAdmin extends javax.swing.JFrame {
                         kolom[1],
                         kolom[2],
                         kolom[4],
-                        kolom[5]
+                        kolom[5],
+                        kolom[3]
                     });
                 }
             }
@@ -93,13 +94,13 @@ public class FormMenuAdmin extends javax.swing.JFrame {
 
         tblMenu.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "Nama", "Harga", "Kategori", "Status"
+                "ID", "Nama", "Harga", "Kategori", "Status", "Keterangan"
             }
         ));
         tblMenu.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -288,7 +289,8 @@ public class FormMenuAdmin extends javax.swing.JFrame {
                     kolom[1],
                     kolom[2],
                     kolom.length > 4 ? kolom[4] : "",
-                    kolom.length > 5 ? kolom[5] : ""
+                    kolom.length > 5 ? kolom[5] : "",
+                    kolom.length > 3 ? kolom[3] : ""
                 });
             }
 
@@ -395,18 +397,18 @@ public class FormMenuAdmin extends javax.swing.JFrame {
 
         int row = tblMenu.getSelectedRow();
         if (row != -1) {
-            String idMenu = tblMenu.getValueAt(row, 0).toString();
-            String namaMenu = tblMenu.getValueAt(row, 1).toString();
-            String hargaMenu = tblMenu.getValueAt(row, 2).toString();
-            String kategoriMenu = tblMenu.getValueAt(row, 3).toString();
-            String statusMenu = tblMenu.getValueAt(row, 4).toString();
+            String idMenu = tblMenu.getValueAt(row, 0) != null ? tblMenu.getValueAt(row, 0).toString() : "";
+            String namaMenu = tblMenu.getValueAt(row, 1) != null ? tblMenu.getValueAt(row, 1).toString() : "";
+            String hargaMenu = tblMenu.getValueAt(row, 2) != null ? tblMenu.getValueAt(row, 2).toString() : "";
+            String kategoriMenu = tblMenu.getValueAt(row, 3) != null ? tblMenu.getValueAt(row, 3).toString() : "";
+            String statusMenu = tblMenu.getValueAt(row, 4) != null ? tblMenu.getValueAt(row, 4).toString() : "";
+            String keteranganMenu = tblMenu.getValueAt(row, 5) != null ? tblMenu.getValueAt(row, 5).toString() : "";
 
             txtNama.setText(namaMenu);
             txtHarga.setText(hargaMenu);
             cmbKategori.setSelectedItem(kategoriMenu);
             cmbStatus.setSelectedItem(statusMenu);
-
-            txtKeterangan.setText("");
+            txtKeterangan.setText(keteranganMenu);
         }
     }//GEN-LAST:event_tblMenuMouseClicked
 

@@ -64,15 +64,28 @@ public class FormReservasi extends javax.swing.JFrame implements Runnable {
             System.out.println("Gagal load menu dari database: " + e.getMessage());
         }
     }
+    
+    private void bersihkanForm() {
+        txtTanggal.setText("");
+        cmbJam.setSelectedIndex(-1);
+        spnJumlahTamu.setValue(1);
+        qtyMakanan.setValue(1);
+        qtyMinuman.setValue(1);
+
+        ((javax.swing.table.DefaultTableModel) tabelReservasiMeja.getModel()).setRowCount(0);
+        ((javax.swing.table.DefaultTableModel) tabelReservasiMenu.getModel()).setRowCount(0);
+
+        lblTotalHarga.setText("Total: Rp 0.");
+    }
 
     public FormReservasi(int userId, String nama, String hakAkses) {
         this.userId = userId;
         this.nama = nama;
         this.hakAkses = hakAkses;
         initComponents();
-        
-        ((javax.swing.table.DefaultTableModel)tabelReservasiMenu.getModel()).setRowCount(0);
-        
+
+        ((javax.swing.table.DefaultTableModel) tabelReservasiMenu.getModel()).setRowCount(0);
+
         loadMenuToComboBox();
 
         try {
@@ -93,9 +106,14 @@ public class FormReservasi extends javax.swing.JFrame implements Runnable {
         itemKembali.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 try {
-                    if (sendToServer != null) sendToServer.writeBytes("EXIT\n");
-                    if (clientSocket != null) clientSocket.close();
-                } catch (Exception ignored) {}
+                    if (sendToServer != null) {
+                        sendToServer.writeBytes("EXIT\n");
+                    }
+                    if (clientSocket != null) {
+                        clientSocket.close();
+                    }
+                } catch (Exception ignored) {
+                }
                 new FormDashboard(FormReservasi.this.userId, FormReservasi.this.nama, FormReservasi.this.hakAkses).setVisible(true);
                 FormReservasi.this.dispose();
             }
@@ -116,7 +134,6 @@ public class FormReservasi extends javax.swing.JFrame implements Runnable {
 
         cmbJam = new javax.swing.JComboBox<>();
         spnJumlahTamu = new javax.swing.JSpinner();
-        spnTanggal = new javax.swing.JSpinner();
         jScrollPane2 = new javax.swing.JScrollPane();
         tabelReservasiMenu = new javax.swing.JTable();
         btnKonfirmasi = new javax.swing.JButton();
@@ -139,13 +156,15 @@ public class FormReservasi extends javax.swing.JFrame implements Runnable {
         btnEnterMinuman = new javax.swing.JButton();
         btnDeleteMenu = new javax.swing.JButton();
         lblTotalHarga = new javax.swing.JLabel();
+        txtTanggal = new javax.swing.JFormattedTextField();
+        jLabel8 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         cmbJam.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00" }));
         cmbJam.setSelectedIndex(-1);
 
-        spnTanggal.setModel(new javax.swing.SpinnerDateModel());
+        spnJumlahTamu.setModel(new javax.swing.SpinnerNumberModel(1, 1, 100, 1));
 
         tabelReservasiMenu.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -196,9 +215,9 @@ public class FormReservasi extends javax.swing.JFrame implements Runnable {
             }
         });
 
-        cmbMenuMinuman.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {}));
+        cmbMenuMinuman.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "3-Es Teh-5000" }));
 
-        cmbMenuMakanan.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {}));
+        cmbMenuMakanan.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1-Nasi Goreng-15000", "2-Ayam Bakar-20000" }));
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel5.setText("Minuman");
@@ -221,6 +240,10 @@ public class FormReservasi extends javax.swing.JFrame implements Runnable {
             }
         ));
         jScrollPane3.setViewportView(tabelReservasiMeja);
+
+        qtyMakanan.setModel(new javax.swing.SpinnerNumberModel(1, 1, 100, 1));
+
+        qtyMinuman.setModel(new javax.swing.SpinnerNumberModel(1, 1, 100, 1));
 
         btnEnterMakanan.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnEnterMakanan.setText("Enter");
@@ -249,6 +272,14 @@ public class FormReservasi extends javax.swing.JFrame implements Runnable {
         lblTotalHarga.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblTotalHarga.setText("Total: Rp 0.");
 
+        try {
+            txtTanggal.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("####-##-##")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+
+        jLabel8.setText("Format: yyyy-MM-dd");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -259,9 +290,6 @@ public class FormReservasi extends javax.swing.JFrame implements Runnable {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(34, 34, 34)
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel2)
                                     .addComponent(jLabel3)
@@ -269,9 +297,13 @@ public class FormReservasi extends javax.swing.JFrame implements Runnable {
                                 .addGap(24, 24, 24)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                     .addComponent(cmbJam, javax.swing.GroupLayout.Alignment.LEADING, 0, 162, Short.MAX_VALUE)
-                                    .addComponent(spnTanggal, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(spnJumlahTamu)))
-                            .addComponent(cmbMejaKosong, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(spnJumlahTamu)
+                                    .addComponent(txtTanggal, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(cmbMejaKosong, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(34, 34, 34)
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addContainerGap(465, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -316,11 +348,13 @@ public class FormReservasi extends javax.swing.JFrame implements Runnable {
             .addGroup(layout.createSequentialGroup()
                 .addGap(12, 12, 12)
                 .addComponent(jLabel1)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGap(2, 2, 2)
+                .addComponent(jLabel8)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel2)
-                    .addComponent(spnTanggal, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                    .addComponent(txtTanggal, javax.swing.GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cmbJam, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
@@ -357,7 +391,7 @@ public class FormReservasi extends javax.swing.JFrame implements Runnable {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnDeleteMenu)
                     .addComponent(lblTotalHarga))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnKembali, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnKonfirmasi, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -379,36 +413,35 @@ public class FormReservasi extends javax.swing.JFrame implements Runnable {
                 javax.swing.JOptionPane.showMessageDialog(this, "Silakan pilih salah satu meja kosong dari tabel terlebih dahulu!");
                 return;
             }
-            
+
             if (cmbJam.getSelectedIndex() == -1) {
                 javax.swing.JOptionPane.showMessageDialog(this, "Silakan pilih Jam Reservasi terlebih dahulu!");
                 return;
             }
-            
+
             String idMeja = tabelReservasiMeja.getValueAt(barisTerpilih, 0).toString();
+         
+            String tanggal = txtTanggal.getText();
+            String jam = cmbJam.getSelectedItem().toString();
+            String jumlahTamu = spnJumlahTamu.getValue().toString();
+            String userID = String.valueOf(this.userId);
 
-            java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
-            String tanggal = sdf.format((java.util.Date) spnTanggal.getValue());
-        String jam = cmbJam.getSelectedItem().toString();
-        String jumlahTamu = spnJumlahTamu.getValue().toString();
-        String userID = String.valueOf(this.userId);
+            StringBuilder cartPesanan = new StringBuilder();
+            javax.swing.table.DefaultTableModel modelMenu = (javax.swing.table.DefaultTableModel) tabelReservasiMenu.getModel();
 
-        StringBuilder cartPesanan = new StringBuilder();
-        javax.swing.table.DefaultTableModel modelMenu = (javax.swing.table.DefaultTableModel) tabelReservasiMenu.getModel();
+            for (int i = 0; i < modelMenu.getRowCount(); i++) {
+                String idMenu = modelMenu.getValueAt(i, 0).toString();
+                String qty = modelMenu.getValueAt(i, 4).toString();
+                cartPesanan.append(idMenu).append(",").append(qty).append(";");
+            }
 
-        for (int i = 0; i < modelMenu.getRowCount(); i++) {
-            String idMenu = modelMenu.getValueAt(i, 0).toString();
-            String qty = modelMenu.getValueAt(i, 4).toString();
-            cartPesanan.append(idMenu).append(",").append(qty).append(";");
-        }
+            String stringPesanan = cartPesanan.toString();
+            if (stringPesanan.isEmpty()) {
+                stringPesanan = "0,0";
+            }
 
-        String stringPesanan = cartPesanan.toString();
-        if (stringPesanan.isEmpty()) {
-            stringPesanan = "0,0";
-        }
-
-        String pesan = "BOOKING_MEJA|" + userID + "|" + idMeja + "|" + tanggal + "|" + jam + "|" + jumlahTamu + "|" + stringPesanan;
-        kirimKeServerTCP(pesan);
+            String pesan = "BOOKING_MEJA|" + userID + "|" + idMeja + "|" + tanggal + "|" + jam + "|" + jumlahTamu + "|" + stringPesanan;
+            kirimKeServerTCP(pesan);
         } catch (Exception ex) {
             javax.swing.JOptionPane.showMessageDialog(this, "Error saat Konfirmasi Booking: " + ex.getMessage());
         }
@@ -420,12 +453,11 @@ public class FormReservasi extends javax.swing.JFrame implements Runnable {
                 javax.swing.JOptionPane.showMessageDialog(this, "Silakan pilih Jam Reservasi terlebih dahulu!");
                 return;
             }
-
-            java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
-            String tanggal = sdf.format((java.util.Date) spnTanggal.getValue());
+           
+            String tanggal = txtTanggal.getText();
             String jam = cmbJam.getSelectedItem().toString();
             String jumlahTamu = spnJumlahTamu.getValue().toString();
-            
+
             if (Integer.parseInt(jumlahTamu) <= 0) {
                 javax.swing.JOptionPane.showMessageDialog(this, "Jumlah tamu harus lebih dari 0!");
                 return;
@@ -575,15 +607,16 @@ public class FormReservasi extends javax.swing.JFrame implements Runnable {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JLabel lblTotalHarga;
     private javax.swing.JSpinner qtyMakanan;
     private javax.swing.JSpinner qtyMinuman;
     private javax.swing.JSpinner spnJumlahTamu;
-    private javax.swing.JSpinner spnTanggal;
     private javax.swing.JTable tabelReservasiMeja;
     private javax.swing.JTable tabelReservasiMenu;
+    private javax.swing.JFormattedTextField txtTanggal;
     // End of variables declaration//GEN-END:variables
 
     @Override
@@ -595,21 +628,24 @@ public class FormReservasi extends javax.swing.JFrame implements Runnable {
                     System.out.println("Koneksi ke TCP Server terputus.");
                     break;
                 }
-                
+
                 if (response.trim().isEmpty()) {
                     javax.swing.JOptionPane.showMessageDialog(this, "Info Server: Tidak ada meja yang tersedia untuk jumlah tamu tersebut, atau terjadi error di Server.");
                     continue;
                 }
-                
+
                 if (response.startsWith("ERROR|")) {
                     String[] msg = response.split("\\|");
                     javax.swing.JOptionPane.showMessageDialog(this, msg[1]);
                     continue;
                 }
-                
+
                 if (response.startsWith("BOOKING_REPLY|")) {
                     String[] msg = response.split("\\|");
                     javax.swing.JOptionPane.showMessageDialog(this, "Notifikasi Server: " + msg[1]);
+                    if (msg[1].contains("SUKSES")) {
+                        bersihkanForm();
+                    }
                 } else {
                     javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) tabelReservasiMeja.getModel();
                     model.setRowCount(0);

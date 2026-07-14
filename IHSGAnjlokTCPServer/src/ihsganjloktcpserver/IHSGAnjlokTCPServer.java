@@ -86,7 +86,7 @@ public class IHSGAnjlokTCPServer {
                     hasil = cariMejaKosong(pecah[1], pecah[2], Integer.parseInt(pecah[3]));
 
                 } else if (perintah.equals("BOOKING_MEJA")) {
-                    String tanggalLengkap = pecah[3] + " " + pecah[4] + ":00";                    
+                    String tanggalLengkap = pecah[3] + " " + pecah[4] + ":00";
                     hasil = bookingMeja(Integer.parseInt(pecah[1]), Integer.parseInt(pecah[2]), tanggalLengkap, Integer.parseInt(pecah[5]), pecah[6]);
                 } else if (pesan.startsWith("GET_ALL_MEJA")) {
                     hasil = getAllMeja();
@@ -102,12 +102,38 @@ public class IHSGAnjlokTCPServer {
                 } else if (pesan.startsWith("BATAL_RESERVASI")) {
                     String[] data = pesan.split("~");
                     hasil = batalReservasi(data[1]);
+                } else if (perintah.equals("UPDATE_STATUS_RESERVASI")) {
+                    hasil = updateStatusReservasi(pecah[1], pecah[2]);
+                } else if (perintah.equals("UPDATE_STATUS_DETAIL")) {
+                    hasil = updateStatusDetail(pecah[1], pecah[2], pecah[3]);
                 }
-
             } catch (Exception ex) {
                 System.out.println("Error prosesPesan: " + ex);
             }
             return hasil;
+        }
+
+        public String updateStatusReservasi(String idRes, String status) {
+            try (Connection conn = new MyConnection().getConnection(); PreparedStatement ps = conn.prepareStatement("UPDATE reservasi SET statusReservasi=? WHERE id=?")) {
+                ps.setString(1, status);
+                ps.setInt(2, Integer.parseInt(idRes));
+                ps.executeUpdate();
+                return "SUKSES: Status Reservasi berhasil diubah menjadi " + status;
+            } catch (Exception e) {
+                return "ERROR: Gagal update reservasi -> " + e.getMessage();
+            }
+        }
+
+        public String updateStatusDetail(String idRes, String namaMenu, String status) {          
+            try (Connection conn = new MyConnection().getConnection(); PreparedStatement ps = conn.prepareStatement("UPDATE detailpesanan SET statusPesanan=? WHERE reservasiID=? AND menuID=(SELECT id FROM menu WHERE nama=?)")) {
+                ps.setString(1, status);
+                ps.setInt(2, Integer.parseInt(idRes));
+                ps.setString(3, namaMenu);
+                ps.executeUpdate();
+                return "SUKSES: Status Detail Pesanan berhasil diubah menjadi " + status;
+            } catch (Exception e) {
+                return "ERROR: Gagal update detail -> " + e.getMessage();
+            }
         }
 
         public String getAllMeja() {
@@ -181,6 +207,10 @@ public class IHSGAnjlokTCPServer {
                         psUpdateMeja.setInt(1, mejaID);
                         psUpdateMeja.executeUpdate();
                     }
+                    try (PreparedStatement psUpdatePesanan = conn.prepareStatement("UPDATE detailpesanan SET statusPesanan='Cancelled' WHERE reservasiID=?")) {
+                        psUpdatePesanan.setInt(1, Integer.parseInt(idReservasi));
+                        psUpdatePesanan.executeUpdate();
+                    }
                     return "Reservasi berhasil dibatalkan!";
                 } else {
                     return "Reservasi tidak ditemukan.";
@@ -196,7 +226,7 @@ public class IHSGAnjlokTCPServer {
                 if (conn == null) {
                     return "ERROR|Koneksi database TCP Server GAGAL (Mungkin driver belum ditambah di library/URL salah).";
                 }
-                
+
                 String query = "SELECT id, nomorMeja, kapasitas, status FROM meja WHERE status = 'Tersedia' AND kapasitas >= ?";
                 try (PreparedStatement ps = conn.prepareStatement(query)) {
                     ps.setInt(1, jumlahTamu);
@@ -221,7 +251,7 @@ public class IHSGAnjlokTCPServer {
         public String bookingMeja(int userID, int idMeja, String tanggalLengkap, int jumlahTamu, String cartPesanan) {
             try (Connection conn = new MyConnection().getConnection()) {
                 if (conn == null) {
-                     return "BOOKING_REPLY|GAGAL: Koneksi database TCP Server GAGAL.";
+                    return "BOOKING_REPLY|GAGAL: Koneksi database TCP Server GAGAL.";
                 }
 
                 String updateQuery = "UPDATE meja SET status = 'Dipesan' WHERE id = ? AND status = 'Tersedia'";
@@ -234,7 +264,7 @@ public class IHSGAnjlokTCPServer {
                 if (rowAffected == 0) {
                     return "BOOKING_REPLY|GAGAL: Maaf, meja tersebut baru saja dipesan oleh pelanggan lain.";
                 }
-                
+
                 String insertQuery = "INSERT INTO reservasi (userID, mejaID, statusReservasi, tanggal, jumlahTamu) VALUES (?, ?, 'Pending', ?, ?)";
                 int reservasiID = -1;
                 try (PreparedStatement psInsert = conn.prepareStatement(insertQuery, java.sql.Statement.RETURN_GENERATED_KEYS)) {
@@ -250,7 +280,7 @@ public class IHSGAnjlokTCPServer {
                         }
                     }
                 }
-                
+
                 if (reservasiID != -1 && !cartPesanan.equals("0,0")) {
                     String[] listPesanan = cartPesanan.split(";");
                     String foodQuery = "INSERT INTO detailpesanan (reservasiID, menuID, jumlahItem, hargaSatuan, statusPesanan) "
@@ -271,9 +301,9 @@ public class IHSGAnjlokTCPServer {
                         }
                         psFood.executeBatch();
                     }
-                }                            
+                }
 
-                return "BOOKING_REPLY|SUKSES: Reservasi meja nomor " + idMeja + " beserta pesanan makanan berhasil!";
+                return "BOOKING_REPLY|SUKSES: Reservasi meja dengan ID " + idMeja + " beserta pesanan makanan berhasil!";
 
             } catch (Exception e) {
                 return "BOOKING_REPLY|Error sistem:" + e.getMessage();

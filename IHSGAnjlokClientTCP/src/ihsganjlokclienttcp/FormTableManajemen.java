@@ -57,6 +57,13 @@ public class FormTableManajemen extends javax.swing.JFrame {
             javax.swing.JOptionPane.showMessageDialog(this, "Error load data meja: " + e.getMessage());
         }
     }
+    
+    private void bersihkanForm() {
+        txtMeja.setText("");
+        txtKapasitas.setText("");
+        cmbStatus.setSelectedIndex(-1);
+        tblManajemen.clearSelection();
+    }
 
     private void tblManajemenMouseClicked(java.awt.event.MouseEvent evt) {
         int row = tblManajemen.getSelectedRow();
@@ -230,6 +237,7 @@ public class FormTableManajemen extends javax.swing.JFrame {
                 String resp = in.readLine();
                 javax.swing.JOptionPane.showMessageDialog(this, resp);
                 loadDataMeja();
+                bersihkanForm();
             } catch (Exception e) {
                 javax.swing.JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
             }
@@ -251,6 +259,7 @@ public class FormTableManajemen extends javax.swing.JFrame {
             String resp = in.readLine();
             javax.swing.JOptionPane.showMessageDialog(this, resp);
             loadDataMeja();
+            bersihkanForm();
         } catch (Exception e) {
             javax.swing.JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
         }
@@ -277,6 +286,7 @@ public class FormTableManajemen extends javax.swing.JFrame {
             String resp = in.readLine();
             javax.swing.JOptionPane.showMessageDialog(this, resp);
             loadDataMeja();
+            bersihkanForm();
         } catch (Exception e) {
             javax.swing.JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
         }

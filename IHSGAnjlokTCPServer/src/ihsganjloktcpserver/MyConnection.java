@@ -18,7 +18,7 @@ public class MyConnection {
     public Connection getConnection() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            connect = DriverManager.getConnection("jdbc:mysql://localhost:3307/db_food_reservation?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC", "root", "");
+            connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/uasdisprog?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Jakarta", "root", "");
         } catch (Exception ex) {
             System.out.println("Error Get Connection : " + ex);
         }
